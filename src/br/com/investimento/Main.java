@@ -1,9 +1,12 @@
 package br.com.investimento;
 
 import br.com.investimento.model.Transacao;
-import java.util.*;
+import br.com.investimento.ui.GraficoInvestimento;
 
-public class Main{
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -19,10 +22,11 @@ public class Main{
             System.out.println("2. " + mensagens.get("menu.listar"));
             System.out.println("3. " + mensagens.get("menu.total"));
             System.out.println("4. " + mensagens.get("menu.sair"));
+            System.out.println("5. " + mensagens.get("menu.grafico"));
             System.out.print(mensagens.get("menu.escolha"));
 
             int opcao = scanner.nextInt();
-            scanner.nextLine(); // limpar buffer
+            scanner.nextLine();
 
             if (opcao == 1) {
                 System.out.print(mensagens.get("input.nome"));
@@ -57,6 +61,15 @@ public class Main{
             } else if (opcao == 4) {
                 System.out.println(mensagens.get("msg.encerrar"));
                 break;
+
+            } else if (opcao == 5) {
+                Map<String, Double> dadosGrafico = transacoes.stream()
+                    .collect(Collectors.groupingBy(
+                        Transacao::getSimbolo,
+                        Collectors.summingDouble(t -> t.getQuantidade() * t.getPrecoUnitario())
+                    ));
+
+                new GraficoInvestimento(dadosGrafico, idiomaEscolhido).setVisible(true);
             } else {
                 System.out.println(mensagens.get("msg.opcaoInvalida"));
             }
