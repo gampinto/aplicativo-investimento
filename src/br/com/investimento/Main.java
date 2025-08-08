@@ -63,9 +63,9 @@ public class Main {
                 break;
 
             } else if (opcao == 5) {
-                System.out.println("1. Gráfico de Barras");
-                System.out.println("2. Gráfico de Progresso");
-                System.out.print("Escolha o tipo de gráfico: ");
+            	System.out.println("1. " + mensagens.get("menu.grafico.opcao1"));
+            	System.out.println("2. " + mensagens.get("menu.grafico.opcao2"));
+            	System.out.print(mensagens.get("menu.grafico.escolha"));
                 int tipo = scanner.nextInt();
 
                 if (tipo == 1) {
