@@ -1,7 +1,8 @@
 package br.com.investimento;
 
 import br.com.investimento.model.Transacao;
-import br.com.investimento.ui.GraficoInvestimento;
+import br.com.investimento.ui.GraficoBarras;
+import br.com.investimento.ui.GraficoProgresso;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,7 +12,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Escolha o idioma (pt, en, es, fr): ");
-        String idiomaEscolhido = scanner.nextLine();
+        String idiomaEscolhido = scanner.nextLine().trim().toLowerCase();
 
         Mensagens mensagens = new Mensagens(idiomaEscolhido);
         List<Transacao> transacoes = new ArrayList<>();
@@ -52,10 +53,9 @@ public class Main {
                 }
 
             } else if (opcao == 3) {
-                double total = 0;
-                for (Transacao t : transacoes) {
-                    total += t.getPrecoTotal();
-                }
+                double total = transacoes.stream()
+                    .mapToDouble(Transacao::getPrecoTotal)
+                    .sum();
                 System.out.println(mensagens.get("msg.total") + " R$" + total);
 
             } else if (opcao == 4) {
@@ -63,13 +63,35 @@ public class Main {
                 break;
 
             } else if (opcao == 5) {
-                Map<String, Double> dadosGrafico = transacoes.stream()
-                    .collect(Collectors.groupingBy(
-                        Transacao::getSimbolo,
-                        Collectors.summingDouble(t -> t.getQuantidade() * t.getPrecoUnitario())
-                    ));
+                System.out.println("1. Gráfico de Barras");
+                System.out.println("2. Gráfico de Progresso");
+                System.out.print("Escolha o tipo de gráfico: ");
+                int tipo = scanner.nextInt();
 
-                new GraficoInvestimento(dadosGrafico, idiomaEscolhido).setVisible(true);
+                if (tipo == 1) {
+                	Map<String, Double> dadosGrafico = transacoes.stream()
+                		    .collect(Collectors.groupingBy(
+                		        t -> t.sigla,
+                		        Collectors.summingDouble(t -> t.getQuantidade() * t.getPrecoUnitario())
+                		    ));
+
+
+                    new GraficoBarras(dadosGrafico, idiomaEscolhido).setVisible(true);
+
+                } else if (tipo == 2) {
+                    List<Double> progresso = new ArrayList<>();
+                    double acumulado = 0;
+                    for (Transacao t : transacoes) {
+                        acumulado += t.getPrecoTotal();
+                        progresso.add(acumulado);
+                    }
+
+                    new GraficoProgresso(progresso, idiomaEscolhido).setVisible(true);
+
+                } else {
+                    System.out.println("Tipo de gráfico inválido.");
+                }
+
             } else {
                 System.out.println(mensagens.get("msg.opcaoInvalida"));
             }

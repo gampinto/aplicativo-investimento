@@ -2,7 +2,7 @@ package br.com.investimento.model;
 
 public class Transacao {
     private String nome;
-    private String sigla;
+    public String sigla;
     private double quantidade;
     private double precoUnitario;
 
@@ -15,6 +15,14 @@ public class Transacao {
 
     public double getPrecoTotal() {
         return quantidade * precoUnitario;
+    }
+
+    public double getQuantidade() {
+        return quantidade;
+    }
+
+    public double getPrecoUnitario() {
+        return precoUnitario;
     }
 
     @Override
