@@ -121,7 +121,7 @@ public class Main {
                 
             } else if (opcao == 7) {
                 BreakEvenCalculo bep = new BreakEvenCalculo(scanner, mensagens);
-                bep.executar();
+                bep.executar();								
             } else {
                 System.out.println(mensagens.get("msg.opcaoInvalida"));
             }

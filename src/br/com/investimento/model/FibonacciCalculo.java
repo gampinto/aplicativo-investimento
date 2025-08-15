@@ -54,13 +54,26 @@ public class FibonacciCalculo {
         System.out.print(mensagens.get("fibonacci.precoFinal"));
         double precoFinal = scanner.nextDouble();
 
-        double diferenca = precoFinal - precoInicial;
+        double diferenca;
+        double precoCalculado;
 
         System.out.println("\n" + mensagens.get("fibonacci.niveisCalculados") + ":");
+
         for (double nivel : listaValores) {
-            double precoCalculado = (tipoMovimento == 1) 
-                                    ? precoInicial + (diferenca * nivel)
-                                    : precoInicial - (diferenca * nivel);
+            if (tipoMovimento == 1 && tipoFibonacci == 1) {
+                diferenca = precoFinal - precoInicial;
+                precoCalculado = precoFinal - (diferenca * nivel);
+            } else if (tipoMovimento == 2 && tipoFibonacci == 1) {
+                diferenca = precoInicial - precoFinal;
+                precoCalculado = precoFinal + (diferenca * nivel);
+            } else if (tipoMovimento == 1 && tipoFibonacci == 2) {
+                diferenca = precoFinal - precoInicial;
+                precoCalculado = precoFinal + (diferenca * nivel);
+            } else {
+                diferenca = precoInicial - precoFinal;
+                precoCalculado = precoFinal - (diferenca * nivel);
+            }
+
             System.out.printf("Nível %.3f -> %.2f%n", nivel, precoCalculado);
         }
     }
