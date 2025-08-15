@@ -26,7 +26,8 @@ public class Main {
             System.out.println("3. " + mensagens.get("menu.total"));
             System.out.println("4. " + mensagens.get("menu.sair"));
             System.out.println("5. " + mensagens.get("menu.grafico"));
-            System.out.println("6. " + mensagens.get("menu.fibonacci")); // nova opção
+            System.out.println("6. " + mensagens.get("menu.fibonacci"));
+            System.out.println("7. " + mensagens.get("menu.bep"));
             System.out.print(mensagens.get("menu.escolha"));
 
             int opcao = scanner.nextInt();
@@ -116,6 +117,11 @@ public class Main {
             } else if (opcao == 6) {
                 FibonacciCalculo fibonacci = new FibonacciCalculo(scanner, mensagens);
                 fibonacci.executar();
+                System.out.println(mensagens.get("msg.opcaoInvalida"));
+                
+            } else if (opcao == 7) {
+                BreakEvenCalculo bep = new BreakEvenCalculo(scanner, mensagens);
+                bep.executar();
             } else {
                 System.out.println(mensagens.get("msg.opcaoInvalida"));
             }
