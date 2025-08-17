@@ -17,6 +17,7 @@ public class Main {
         Mensagens mensagens = new Mensagens(idiomaEscolhido);
         List<Transacao> transacoes = new ArrayList<>();
         Queue<LoteCompra> filaCompras = new LinkedList<>();
+        Calculos calculos = new Calculos();
         double lucroTotal = 0;
 
         while (true) {
@@ -47,33 +48,7 @@ public class Main {
                 transacoes.add(t);
                 System.out.println(mensagens.get("msg.sucesso"));
 
-                if (quantidade > 0) {
-                    filaCompras.add(new LoteCompra(quantidade, preco));
-                } else {
-                    double qtdParaVender = -quantidade; 
-                    double receitaVenda = qtdParaVender * preco;
-                    double custoTotal = 0;
-
-                    while (qtdParaVender > 0 && !filaCompras.isEmpty()) {
-                        LoteCompra lote = filaCompras.peek();
-                        if (lote.getQuantidade() <= qtdParaVender) {
-                            custoTotal += lote.getQuantidade() * lote.getPrecoUnitario();
-                            qtdParaVender -= lote.getQuantidade();
-                            filaCompras.poll(); 
-                        } else {
-                            custoTotal += qtdParaVender * lote.getPrecoUnitario();
-                            lote.setQuantidade(lote.getQuantidade() - qtdParaVender);
-                            qtdParaVender = 0;
-                        }
-                    }
-
-                    double lucroVenda = receitaVenda - custoTotal;
-                    lucroTotal += lucroVenda;
-
-                    if (qtdParaVender > 0) {
-                        System.out.println("ATENÇÃO: Venda maior que saldo disponível!");
-                    }
-                }
+                lucroTotal += calculos.processarTransacao(filaCompras, quantidade, preco);
             } else if (opcao == 2) {
                 if (transacoes.isEmpty()) {
                     System.out.println(mensagens.get("msg.vazio"));
@@ -84,9 +59,10 @@ public class Main {
                 }
             } else if (opcao == 3) {
                 double total = transacoes.stream()
-                    .mapToDouble(Transacao::getPrecoTotal)
-                    .sum();
+                        .mapToDouble(Transacao::getPrecoTotal)
+                        .sum();
                 System.out.println(mensagens.get("msg.total") + " R$" + total);
+                System.out.println("Lucro acumulado: R$" + lucroTotal);
             } else if (opcao == 4) {
                 System.out.println(mensagens.get("msg.encerrar"));
                 break;
@@ -98,10 +74,10 @@ public class Main {
 
                 if (tipo == 1) {
                     Map<String, Double> dadosGrafico = transacoes.stream()
-                        .collect(Collectors.groupingBy(
-                            t -> t.sigla,
-                            Collectors.summingDouble(t -> t.getQuantidade() * t.getPrecoUnitario())
-                        ));
+                            .collect(Collectors.groupingBy(
+                                    t -> t.sigla,
+                                    Collectors.summingDouble(t -> t.getQuantidade() * t.getPrecoUnitario())
+                            ));
                     new GraficoBarras(dadosGrafico, idiomaEscolhido).setVisible(true);
                 } else if (tipo == 2) {
                     List<Double> progresso = new ArrayList<>();
@@ -117,11 +93,9 @@ public class Main {
             } else if (opcao == 6) {
                 FibonacciCalculo fibonacci = new FibonacciCalculo(scanner, mensagens);
                 fibonacci.executar();
-                System.out.println(mensagens.get("msg.opcaoInvalida"));
-                
             } else if (opcao == 7) {
                 BreakEvenCalculo bep = new BreakEvenCalculo(scanner, mensagens);
-                bep.executar();								
+                bep.executar();
             } else {
                 System.out.println(mensagens.get("msg.opcaoInvalida"));
             }
