@@ -6,7 +6,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
@@ -29,7 +28,9 @@ public class GraficoProgresso extends JFrame {
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < progresso.size(); i++) {
-            dataset.addValue(progresso.get(i), mensagens.getString("graficoProgresso.legenda"), String.valueOf(i + 1));
+            Number valor = progresso.get(i).doubleValue();
+            String rotulo = String.valueOf(i);
+            dataset.addValue(valor, mensagens.getString("graficoProgresso.legenda"), rotulo);
         }
 
         JFreeChart chart = ChartFactory.createLineChart(
@@ -42,5 +43,4 @@ public class GraficoProgresso extends JFrame {
         ChartPanel panel = new ChartPanel(chart);
         setContentPane(panel);
     }
-
 }

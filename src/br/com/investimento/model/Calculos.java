@@ -13,7 +13,7 @@ public class Calculos {
             // se estivermos comprando ativos
             filaCompras.add(new LoteCompra(quantidade, preco));
         } else {
-            // se estivermo vendendo ativos
+            // se estivermos vendendo ativos
             BigDecimal qtdParaVender = quantidade.negate();
             BigDecimal receitaVenda = qtdParaVender.multiply(preco);
             BigDecimal custoTotal = BigDecimal.ZERO;
