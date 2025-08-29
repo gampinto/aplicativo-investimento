@@ -3,7 +3,10 @@ package br.com.investimento.ui;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -26,19 +29,33 @@ public class GraficoProgresso extends JFrame {
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        XYSeries series = new XYSeries(mensagens.getString("graficoProgresso.legenda"));
+
+        series.add(0, 0);
+
         for (int i = 0; i < progresso.size(); i++) {
-            Number valor = progresso.get(i).doubleValue();
-            String rotulo = String.valueOf(i);
-            dataset.addValue(valor, mensagens.getString("graficoProgresso.legenda"), rotulo);
+            series.add(i, progresso.get(i).doubleValue());
         }
 
-        JFreeChart chart = ChartFactory.createLineChart(
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
+
+        JFreeChart chart = ChartFactory.createXYLineChart(
                 mensagens.getString("graficoProgresso.titulo"),
                 mensagens.getString("graficoProgresso.eixoX"),
                 mensagens.getString("graficoProgresso.eixoY"),
-                dataset
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
         );
+
+        chart.getXYPlot().getRangeAxis().setLowerBound(0);
+
+        NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
+        xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        xAxis.setLowerBound(0);
 
         ChartPanel panel = new ChartPanel(chart);
         setContentPane(panel);

@@ -111,7 +111,6 @@ public class Main {
                             List<BigDecimal> progresso = new ArrayList<>();
                             BigDecimal acumulado = BigDecimal.ZERO;
 
-                            // ponto de origem (0)
                             progresso.add(acumulado);
 
                             for (Transacao tr : transacoesDoBanco) {
@@ -120,7 +119,8 @@ public class Main {
                             }
 
                             new GraficoProgresso(progresso, idiomaEscolhido).setVisible(true);
-                        } else {
+                            }
+ else {
                             System.out.println("Tipo de gráfico inválido.");
                         }
                     } catch (SQLException e) {

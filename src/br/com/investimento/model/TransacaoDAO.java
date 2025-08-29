@@ -57,4 +57,26 @@ public class TransacaoDAO {
         }
     }
 
+public List<BigDecimal> listarProgresso() throws SQLException {
+    List<BigDecimal> progresso = new ArrayList<>();
+    BigDecimal acumulado = BigDecimal.ZERO;
+
+    progresso.add(acumulado);
+
+    String sql = "SELECT quantidade * preco_unitario AS total FROM transacoes ORDER BY ROWID"; 
+    try (Connection con = Conexao.getConnection();
+         Statement stmt = con.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+
+        while (rs.next()) {
+            BigDecimal valor = rs.getBigDecimal("total");
+            if (valor != null) {
+                acumulado = acumulado.add(valor);
+                progresso.add(acumulado);
+            }
+        }
+    }
+
+    return progresso;
+}
 }
