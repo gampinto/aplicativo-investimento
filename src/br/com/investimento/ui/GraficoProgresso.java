@@ -6,13 +6,15 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class GraficoProgresso extends JFrame {
 
-    public GraficoProgresso(List<Double> valoresTotais, String idioma) {
+    public GraficoProgresso(List<BigDecimal> progresso, String idioma) {
         Locale locale = switch (idioma.toLowerCase()) {
             case "en" -> Locale.ENGLISH;
             case "es" -> new Locale("es", "ES");
@@ -26,8 +28,8 @@ public class GraficoProgresso extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (int i = 0; i < valoresTotais.size(); i++) {
-            dataset.addValue(valoresTotais.get(i), mensagens.getString("graficoProgresso.legenda"), String.valueOf(i + 1));
+        for (int i = 0; i < progresso.size(); i++) {
+            dataset.addValue(progresso.get(i), mensagens.getString("graficoProgresso.legenda"), String.valueOf(i + 1));
         }
 
         JFreeChart chart = ChartFactory.createLineChart(

@@ -1,23 +1,29 @@
 package br.com.investimento.model;
 
-public class LoteCompra {
-    private double quantidade;
-    private double precoUnitario;
+import java.math.BigDecimal;
 
-    public LoteCompra(double quantidade, double precoUnitario) {
+public class LoteCompra {
+    private BigDecimal quantidade;
+    private BigDecimal precoUnitario;
+
+    public LoteCompra(BigDecimal quantidade, BigDecimal precoUnitario) {
         this.quantidade = quantidade;
         this.precoUnitario = precoUnitario;
     }
 
-    public double getQuantidade() {
+    public BigDecimal getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(double quantidade) {
+    public void setQuantidade(BigDecimal quantidade) {
         this.quantidade = quantidade;
     }
 
-    public double getPrecoUnitario() {
+    public BigDecimal getPrecoUnitario() {
         return precoUnitario;
+    }
+
+    public void setPrecoUnitario(BigDecimal precoUnitario) {
+        this.precoUnitario = precoUnitario;
     }
 }

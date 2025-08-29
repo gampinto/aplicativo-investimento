@@ -6,13 +6,16 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
+
+import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 public class GraficoBarras extends JFrame {
 
-    public GraficoBarras(Map<String, Double> dados, String idioma) {
+    public GraficoBarras(Map<String, BigDecimal> dadosGrafico, String idioma) {
         Locale locale = switch (idioma.toLowerCase()) {
             case "en" -> Locale.ENGLISH;
             case "es" -> new Locale("es", "ES");
@@ -27,7 +30,7 @@ public class GraficoBarras extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (Map.Entry<String, Double> entry : dados.entrySet()) {
+        for (Entry<String, BigDecimal> entry : dadosGrafico.entrySet()) {
             dataset.addValue(entry.getValue(), mensagens.getString("grafico.legenda"), entry.getKey());
         }
 
